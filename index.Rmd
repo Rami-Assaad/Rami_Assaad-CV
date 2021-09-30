@@ -1,0 +1,208 @@
+---
+title: "Rami Assaad's CV"
+author: Rami Assaad
+date: "`r Sys.Date()`"
+output:
+  pagedown::html_resume:
+    css: ['css/styles.css', 'resume']
+    # set it to true for a self-contained HTML page but it'll take longer to render
+    self_contained: true
+---
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(
+  results='asis', 
+  echo = FALSE
+)
+
+library(glue)
+library(tidyverse)
+
+# Set this to true to have links turned into footnotes at the end of the document
+PDF_EXPORT <- FALSE
+
+# Holds all the links that were inserted for placement at the end
+links <- c()
+
+source('parsing_functions.R')
+
+# Load csv with position info
+position_data <- read_csv('positions.csv')
+```
+
+
+
+```{r}
+# When in export mode the little dots are unaligned, so fix that. 
+if(PDF_EXPORT){
+  cat("
+  <style>
+  :root{
+    --decorator-outer-offset-left: -6.5px;
+  }
+  </style>")
+}
+```
+
+
+Aside
+================================================================================
+
+
+![logo](beta_dist.png){width=100%}
+
+```{r}
+# When in export mode the little dots are unaligned, so fix that. 
+if(PDF_EXPORT){
+  cat("View this CV online with links at _nickstrayer.me/cv_")
+} else {
+  cat("[<i class='fas fa-download'></i> Download a PDF of this CV](https://github.com/Rami-Assaad/Rami-Assaad-CV/raw/main/Rami%20Assaad%E2%80%99s%20CV.pdf)")
+}
+```
+
+Contact {#contact}
+--------------------------------------------------------------------------------
+
+
+- <i class="fa fa-envelope"></i> ramiassad009@gmail.com
+- <i class="fa fa-twitter"></i> RamiAssaad
+- <i class="fa fa-github"></i> https://github.com/Rami-Assaad
+- <i class="fa fa-link"></i> [LinkedIN](https://www.linkedin.com/in/rami-assaad-050a65140)
+- <i class="fa fa-phone"></i> (961) 71-648926
+
+
+
+Language Skills {#skills}
+--------------------------------------------------------------------------------
+
+```{r}
+skills <- tribble(
+  ~skill,               ~level,
+  "R",                  5,
+  "MSOffice",          5,
+  "Primaver",           4,
+  "ETABS",              3.5,
+  "InternetBrowsing",  5,
+  "Kobo Collect",       5,
+  "ODK COllect",        3
+)
+build_skill_bars(skills)
+```
+
+
+
+
+
+Disclaimer {#disclaimer}
+--------------------------------------------------------------------------------
+
+Made with the R package [**pagedown**](https://github.com/rstudio/pagedown). 
+
+The source code is available at [github.com/nstrayer/cv](https://github.com/nstrayer/cv).
+
+Last updated on `r Sys.Date()`.
+
+
+
+
+Main
+================================================================================
+
+Rami Assaad {#title}
+--------------------------------------------------------------------------------
+
+
+```{r}
+intro_text <- "I am looking to bring my well-honed skills acquired over the past months of working with mainly international NGOs as MEAL Officer & Assistant active in Lebanon who is responsible for ensuring the monitoring of the project activities is at the best track, with a good quality, before meeting deadlines.
+
+
+Currently, I'm enrolled in an Online Master's degree in Program Evaluation & Data Analytics at Arizona State University. I obtained my bachelor of civil and environmental engineering from Beirut Arab University, which could be an a proof of my ability of using oral and written communication, and the ability of solving complex problems as well as a detailed-oriented person.
+
+I have always used opportunities to enhance my knowledge and skills, and to develop in different directions, which can be seen from the list of additional courses I attended (I was certified in the majority).
+ 
+"
+
+cat(sanitize_links(intro_text))
+```
+
+
+
+Education {data-icon=graduation-cap data-concise=true}
+--------------------------------------------------------------------------------
+
+```{r}
+print_section(position_data, 'education')
+```
+
+
+
+Monitoring & Evaluation Experience {data-icon=laptop}
+--------------------------------------------------------------------------------
+
+```{r}
+print_section(position_data, 'research_positions')
+```
+
+
+
+Project Assistant Experience {data-icon=suitcase}
+--------------------------------------------------------------------------------
+
+
+```{r}
+print_section(position_data, 'industry_positions')
+```
+
+<br>
+<br>
+<br>
+
+Data Collection Experience {data-icon=chalkboard-teacher}
+--------------------------------------------------------------------------------
+
+
+
+```{r}
+print_section(position_data, 'teaching_positions')
+```
+
+
+Internships {data-icon=chart-line}
+--------------------------------------------------------------------------------
+
+
+```{r}
+print_section(position_data, 'data_science_writings')
+```
+
+
+
+Training {data-icon=newspaper}
+--------------------------------------------------------------------------------
+
+```{r}
+print_section(position_data, 'about_me_press')
+```
+
+
+
+
+```{r}
+if(PDF_EXPORT){
+  cat("
+  
+Links {data-icon=link}
+--------------------------------------------------------------------------------
+
+<br>
+
+
+")
+  
+  walk2(links, 1:length(links), function(link, index){
+    print(glue('{index}. {link}'))
+  })
+}
+```
+
+
